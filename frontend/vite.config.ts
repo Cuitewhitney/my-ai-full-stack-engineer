@@ -10,5 +10,5 @@ export default defineConfig({
       },
     }),
   ],
-  base: '/my-ai-fullstack-engineer/',
+  base: '/',
 })

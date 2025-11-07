@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import History from './History';
 
 function App() {
   const [input, setInput] = useState('');
@@ -51,6 +52,7 @@ function App() {
           </div>
         )}
       </div>
+      <History />
     </div>
   );
 }
