@@ -4,3 +4,4 @@ python-dotenv==1.0
 openai==1.50
 django-cors-headers==4.4
 gunicorn==23.0
+dj_database_url
