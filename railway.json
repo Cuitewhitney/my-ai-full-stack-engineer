@@ -1,4 +1,8 @@
 {
-  "build": "pip install -r backend/requirements.txt",
-  "start": "gunicorn backend.backend.wsgi:application --bind 0.0.0.0:$PORT"
+  "build": {
+    "command": "pip install -r backend/requirements.txt"
+  },
+  "start": {
+    "command": "gunicorn backend.backend.wsgi:application --bind 0.0.0.0:$PORT"
+  }
 }
