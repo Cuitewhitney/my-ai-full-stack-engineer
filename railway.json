@@ -3,6 +3,6 @@
     "command": "pip install -r backend/requirements.txt"
   },
   "start": {
-    "command": "gunicorn backend.backend.wsgi:application --bind 0.0.0.0:$PORT"
+    "command": "gunicorn backend.wsgi:application --chdir backend --bind 0.0.0.0:$PORT"
   }
 }
