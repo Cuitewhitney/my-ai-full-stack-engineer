@@ -7,16 +7,18 @@ function App() {
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const enhance = async () => {
+    const enhance = async () => {
     if (!input.trim()) return;
     setLoading(true);
     try {
-      const res = await axios.post('http://127.0.0.1:8000/api/enhance/', {
+      // DYNAMIC API URL – works on localhost AND Railway
+      const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/';
+      const res = await axios.post(`${API_URL}enhance/`, {
         text: input
       });
       setOutput(res.data.enhanced);
     } catch (err: any) {
-      setOutput('Backend not running yet – start it with: python backend/manage.py runserver');
+      setOutput('Backend not running – check Railway logs or run locally with: python manage.py runserver');
     } finally {
       setLoading(false);
     }
