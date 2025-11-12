@@ -1,16 +1,31 @@
-"""
-WSGI config for backend project.
+# """
+# WSGI config for backend project.
 
-It exposes the WSGI callable as a module-level variable named ``application``.
+# It exposes the WSGI callable as a module-level variable named ``application``.
 
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
-"""
+# For more information on this file, see
+# https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
+# """
+
+# import os
+
+# from django.core.wsgi import get_wsgi_application
+
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
+
+# application = get_wsgi_application()
 
 import os
-
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
 application = get_wsgi_application()
+
+# Railway: Listen on PORT
+if __name__ == "__main__":
+    from django.core.management import execute_from_command_line
+    execute_from_command_line()
+else:
+    # For gunicorn
+    import gunicorn
