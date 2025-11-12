@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "start": "cross-env PORT=$PORT serve -s dist -l $PORT",
+    "start": "node server.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
