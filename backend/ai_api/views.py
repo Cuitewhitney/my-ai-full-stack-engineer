@@ -3,16 +3,6 @@ from rest_framework.response import Response
 from .models import Enhancement
 from .serializers import EnhancementSerializer
 import os
-from dotenv import load_dotenv
-load_dotenv()
-
-# Lazy OpenAI client – only create if key exists
-def get_openai_client():
-    api_key = os.getenv("OPENAI_API_KEY")
-    if api_key:
-        from openai import OpenAI
-        return OpenAI(api_key=api_key)
-    return None
 
 class EnhanceView(APIView):
     def post(self, request):
@@ -20,23 +10,25 @@ class EnhanceView(APIView):
         if not text:
             return Response({"error": "No text provided"}, status=400)
 
-        client = get_openai_client()
-        if client:
-            # REAL GPT-4o
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "You are a professional writer. Enhance the text to sound polished and professional."},
-                    {"role": "user", "content": text}
-                ],
-                max_tokens=300
-            )
-            enhanced = response.choices[0].message.content
+        api_key = os.getenv("OPENAI_API_KEY")
+        if api_key:
+            try:
+                from openai import OpenAI
+                client = OpenAI(api_key=api_key)
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {"role": "system", "content": "Enhance this text to be professional and polished."},
+                        {"role": "user", "content": text}
+                    ],
+                    max_tokens=300
+                )
+                enhanced = response.choices[0].message.content
+            except Exception as e:
+                enhanced = f"[AI ERROR: {str(e)}] FALLBACK: {text.upper()}"
         else:
-            # FREE FALLBACK MODE (no key needed)
-            enhanced = f"PROFESSIONAL VERSION:\n\n\"{text.upper()}\"\n\n– Your AI Fullstack Engineer (Add OPENAI_API_KEY for real GPT)"
+            enhanced = f"PROFESSIONAL (FREE MODE):\n\n\"{text.upper()}\"\n\n(Add OPENAI_API_KEY for real AI)"
 
-        # SAVE TO DATABASE
         enhancement = Enhancement.objects.create(original=text, enhanced=enhanced)
         return Response({"enhanced": enhanced})
 
